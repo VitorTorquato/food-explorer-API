@@ -26,9 +26,7 @@ class UseerController {
 
     }
 
-    async update(request,response){
-        
-    }
+    
 
 
 }
