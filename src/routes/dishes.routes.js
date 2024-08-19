@@ -11,5 +11,6 @@ const dishesControlller =   new DishController();
 dishesRoutes.use(ensureAuthenticated)
 
 dishesRoutes.post("/" , dishesControlller.create);
+dishesRoutes.put("/:id" , dishesControlller.update);
 
 module.exports = dishesRoutes;
