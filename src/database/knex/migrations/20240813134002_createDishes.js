@@ -3,7 +3,7 @@ exports.up = knex => knex.schema.createTable("Dishes", table => {
     
     table.increments("id");
 
-    table.binary("image");
+    table.decimal("image");
 
     table.text("name").notNullable();
     table.text("category").notNullable();
