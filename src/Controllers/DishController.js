@@ -3,7 +3,8 @@ const AppError = require('../utils/AppError');
 const knex = require('../database/knex'); 
 
 
-const sqliteConnection = require('../database/sqlite')
+const sqliteConnection = require('../database/sqlite');
+const { request } = require('express');
 
 
 class DishController {
@@ -92,8 +93,72 @@ class DishController {
 
     }
 
-    async show(request,response){
+    async delete(request,response){
         
+        const {id} = request.params;
+
+        await knex('Dishes').where({id}).delete();
+
+        return response.json()
+
+    }
+
+    async show(request,response){
+
+        const {id} = request.params;
+
+        const dish = await knex('Dishes').where({id}).first();
+        const ingredients = await knex('ingredients').where({dish_id:id}).orderBy('name');
+
+        response.json({
+            ...dish,
+            ingredients
+        })
+
+    }
+
+    async index(request,response){
+        const {name,ingredients} = request.query
+
+        const user_id = request.user.id;
+
+        let dishs
+
+        if(ingredients){
+            const filterIngredients = ingredients.split(',').map(ingredientesName => ingredientesName.trim());
+            
+            
+            dishs = await knex('ingredients')
+            .select([
+                'Dishes.id',
+                'Dishes.name',
+                'Dishes.user_id',
+            ])
+            .where('Dishes.user_id' , user_id)
+            .whereLike('Dishes.name', `%${name}%`)
+            .whereIn('ingredients.name', filterIngredients)
+            .innerJoin('Dishes' , 'Dishes.id' , 'ingredients.dish_id')
+            .groupBy('Dishes.id')
+            .orderBy('Dishes.name')
+            }else{
+                dishs = await knex('Dishes')
+                .where({user_id})
+                .whereLike('name' , `%${name}%`)
+                .orderBy('name')
+            }
+
+            const userIngredients = await knex('ingredients').where({user_id});
+            const dihsesWithIngredients = dishs.map(dish => {
+                const dishIngredients = userIngredients.filter(ingredient => ingredient.dish_id === dish.id)
+
+                return{
+                    ...dish,
+                    ingredients: dishIngredients
+                }
+            });
+
+            return response.json(dihsesWithIngredients);
+
     }
 }
 

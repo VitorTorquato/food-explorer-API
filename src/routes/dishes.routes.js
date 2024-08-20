@@ -12,5 +12,8 @@ dishesRoutes.use(ensureAuthenticated)
 
 dishesRoutes.post("/" , dishesControlller.create);
 dishesRoutes.put("/:id" , dishesControlller.update);
+dishesRoutes.delete("/:id" , dishesControlller.delete);
+dishesRoutes.get("/:id" , dishesControlller.show);
+dishesRoutes.get("/" , dishesControlller.index);
 
 module.exports = dishesRoutes;
