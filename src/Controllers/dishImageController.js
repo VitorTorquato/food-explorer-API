@@ -1,7 +1,6 @@
 const knex = require('../database/knex');
 
 const DiskStorage = require('../providers/diskStorage');
-const knexfile = require('../../knexfile');
 
 
 class DishImageController {
