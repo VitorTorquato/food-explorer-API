@@ -16,13 +16,13 @@ const dishesRoutes = Router();
 const dishesControlller =   new DishController();
 const dishImageController =   new DishImageController();
 
-dishesRoutes.use(ensureAuthenticated)
 
-dishesRoutes.post("/" ,verifyUserAuthorization('admin'), dishesControlller.create);
-dishesRoutes.put("/:id" , verifyUserAuthorization('admin'),dishesControlller.update);
-dishesRoutes.delete("/:id" , verifyUserAuthorization('admin'),dishesControlller.delete);
-dishesRoutes.get("/:id" , dishesControlller.show);
+
+dishesRoutes.post("/",ensureAuthenticated ,verifyUserAuthorization('admin'), dishesControlller.create);
+dishesRoutes.put("/:id",ensureAuthenticated , verifyUserAuthorization('admin'),dishesControlller.update);
+dishesRoutes.delete("/:id",ensureAuthenticated , verifyUserAuthorization('admin'),dishesControlller.delete);
+dishesRoutes.get("/:id" ,ensureAuthenticated, dishesControlller.show);
 dishesRoutes.get("/" , dishesControlller.index);
-dishesRoutes.patch("/image/:id" ,verifyUserAuthorization('admin') , upload.single('image') , dishImageController.update);
+dishesRoutes.patch("/image/:id",ensureAuthenticated ,verifyUserAuthorization('admin') , upload.single('image') , dishImageController.update);
 
 module.exports = dishesRoutes;
