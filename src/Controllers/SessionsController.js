@@ -32,7 +32,18 @@ class SessionsController {
             expiresIn
         });
 
-        return response.json({user, token})
+        //httpOnly medidae de seguranca que inpede que o cookie seja acessado por scripts terceiros,
+        response.cookie('token', token , {
+            httpOnly:true,
+            sameSite:'none',
+            secure:true,
+            maxAge: 15 * 60 * 1000
+        });
+
+        //deletando a senha na resposta 
+        delete user.password
+
+        return response.json({user})
 
     }
 

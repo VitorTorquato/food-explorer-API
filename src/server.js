@@ -1,15 +1,21 @@
 require('express-async-errors');
+require('dotenv/config');
 
 const cors = require('cors')
 const express = require('express');
 
 const routes = require('./routes');
+const cookiParser = require('cookie-parser');
 
 const AppError = require('./utils/AppError');
 const uploadConfig = require('../src/config/upload')
 
 const app = express();
-app.use(cors());
+app.use(cookiParser());
+app.use(cors({
+    origin:['http://localhost:3001', 'http://127.0.0.1:3001/'],
+    credentials:true
+}));
 app.use(express.json());
 app.use(routes);
 
@@ -32,6 +38,6 @@ app.use((error , request , response , next) => {
     });
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT , () => console.log(`Server is running on port ${PORT}`));
