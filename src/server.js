@@ -5,17 +5,12 @@ const cors = require('cors')
 const express = require('express');
 
 const routes = require('./routes');
-const cookiParser = require('cookie-parser');
 
 const AppError = require('./utils/AppError');
 const uploadConfig = require('../src/config/upload')
 
 const app = express();
-app.use(cookiParser());
-app.use(cors({
-    origin:['http://localhost:3001', 'http://127.0.0.1:3001/'],
-    credentials:true
-}));
+app.use(cors());
 app.use(express.json());
 app.use(routes);
 
