@@ -21,7 +21,7 @@ const dishImageController =   new DishImageController();
 dishesRoutes.post("/",ensureAuthenticated ,verifyUserAuthorization('admin'), dishesControlller.create);
 dishesRoutes.put("/:id",ensureAuthenticated , verifyUserAuthorization('admin'),dishesControlller.update);
 dishesRoutes.delete("/:id",ensureAuthenticated , verifyUserAuthorization('admin'),dishesControlller.delete);
-dishesRoutes.get("/:id" ,ensureAuthenticated, dishesControlller.show);
+dishesRoutes.get("/:id" , dishesControlller.show);
 dishesRoutes.get("/" , dishesControlller.index);
 dishesRoutes.patch("/image/:id",ensureAuthenticated ,verifyUserAuthorization('admin') , upload.single('image') , dishImageController.update);
 
